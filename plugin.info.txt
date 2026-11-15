@@ -1,0 +1,7 @@
+base   nopublicmediamanager
+author Tassoman
+email  me@tassoman.com
+date   2026-11-15
+name   No Public Media Manager
+desc   Hide Media Manager Tool to anonymous public visitors
+url    https://www.dokuwiki.org/plugin:nopublicmediamanager
