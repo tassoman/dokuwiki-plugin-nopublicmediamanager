@@ -1,5 +1,10 @@
 <?php
 
+use dokuwiki\Extension\ActionPlugin;
+use dokuwiki\Extension\EventHandler;
+use dokuwiki\Extension\Event;
+use dokuwiki\Menu\Item\Media;
+
 /**
  * Prevents anonymous visitors from accessing DokuWiki's media manager.
  *
@@ -7,11 +12,10 @@
  * See the LICENSE file in the project root for the full license text.
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
-
-class action_plugin_nopublicmediamanager extends \dokuwiki\Extension\ActionPlugin
+class action_plugin_nopublicmediamanager extends ActionPlugin
 {
     /** Register hooks to hide the media menu item and block the media action. */
-    public function register(Doku_Event_Handler $controller): void
+    public function register(EventHandler $controller): void
     {
         $controller->register_hook('MENU_ITEMS_ASSEMBLY', 'AFTER', $this, 'hideMediaManager');
         $controller->register_hook('ACTION_ACT_PREPROCESS', 'BEFORE', $this, 'blockMediaAction');
@@ -20,10 +24,10 @@ class action_plugin_nopublicmediamanager extends \dokuwiki\Extension\ActionPlugi
     /**
      * Remove the media manager from the site menu for anonymous visitors.
      *
-     * @param Doku_Event $event Menu assembly event; its data contains the view and items.
+     * @param Event $event Menu assembly event; its data contains the view and items.
      * @param mixed      $param Optional hook parameter supplied by DokuWiki.
      */
-    public function hideMediaManager(Doku_Event $event, $param): void
+    public function hideMediaManager(Event $event, $param): void
     {
         global $INFO;
 
@@ -40,17 +44,17 @@ class action_plugin_nopublicmediamanager extends \dokuwiki\Extension\ActionPlugi
         // Filter out Media menu entries while preserving the remaining item order.
         $event->data['items'] = array_values(array_filter(
             $event->data['items'],
-            fn($item) => !($item instanceof \dokuwiki\Menu\Item\Media)
+            fn($item) => !($item instanceof Media)
         ));
     }
 
     /**
      * Deny direct requests for the media action from anonymous visitors.
      *
-     * @param Doku_Event $event Action preprocessing event; data contains the requested action.
+     * @param Event $event Action preprocessing event; data contains the requested action.
      * @param mixed      $param Optional hook parameter supplied by DokuWiki.
      */
-    public function blockMediaAction(Doku_Event $event, $param): void
+    public function blockMediaAction(Event $event, $param): void
     {
         global $INFO;
 
