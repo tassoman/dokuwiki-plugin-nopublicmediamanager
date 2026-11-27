@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Prevents anonymous visitors from accessing DokuWiki's media manager.
  *
@@ -6,8 +7,6 @@
  * See the LICENSE file in the project root for the full license text.
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
-
-if (!defined('DOKU_INC')) die();
 
 class action_plugin_nopublicmediamanager extends \dokuwiki\Extension\ActionPlugin
 {
